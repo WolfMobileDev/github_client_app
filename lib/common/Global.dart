@@ -2,6 +2,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:github_client_app/common/CacheObject.dart';
+import 'package:github_client_app/common/Git.dart';
 import 'package:github_client_app/models/index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,6 +18,8 @@ const _themes = <MaterialColor> [
 class Global {
     static SharedPreferences _prefs;
     static Profile profile = Profile();
+    //网络缓存对象
+    static NetCache netCache = NetCache();
 
     //可选的主题列表
     static List<MaterialColor> get thems => _themes;
@@ -36,5 +40,15 @@ class Global {
       }
 
       //如果没有缓存策略，设置默认缓存策略
+      profile.cache = profile.cache ?? (CacheConfig()
+      ..enable = true
+      ..maxAge = 3600
+      ..maxCount = 100);
+
+      //初始化网络请求相关配置
+      Git.init();
     }
+
+    //持久化Profile信息
+    static saveProfile() => _prefs.setString("profile", jsonEncode(profile.toJson()));
 }

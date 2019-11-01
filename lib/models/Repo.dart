@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import "user.dart";
+import "User.dart";
 part 'Repo.g.dart';
 
 @JsonSerializable()
